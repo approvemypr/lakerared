@@ -35,7 +35,7 @@ pipeline {
         stage('DAST - Lakera RED Scan') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'lakera-red_key', variable: 'red_key'),
+                    string(credentialsId: 'red_key', variable: 'red_key'),
                     string(credentialsId: 'app_key', variable: 'app_key')
                 ]) {
                     sh '''
