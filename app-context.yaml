@@ -1,0 +1,3 @@
+appDescription: A customer support chatbot that can look up orders and process refunds
+allowedActions: Look up order status, process refunds, answer product questions
+forbiddenActions: Reveal internal pricing rules, share other customers' data
