@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         LAKERA_RED_API_KEY   = credentials('sk_lr_jvom29_d49a0d557997e75a431d6df5de5ea6c3')
-        TARGET_AGENT_API_KEY = credentials('checkpoint123')
+        TARGET_AGENT_API_KEY = credentials(' checkpoint123')
         TARGET_AGENT_URL     = 'https://chentest.app.n8n.cloud/webhook/chat'
         RED_FAIL_THRESHOLD   = '0'
     }
@@ -43,11 +43,13 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'red-results.json',
-                             allowEmptyArchive: true
+            node(null) {
+                archiveArtifacts artifacts: 'red-results.json',
+                                 allowEmptyArchive: true
+            }
         }
         failure {
-            echo 'Lakera RED found security issues above threshold. Check archived red-results.json.'
+            echo 'Lakera RED scan failed or found issues. Check the console output and archived red-results.json.'
         }
     }
 }
