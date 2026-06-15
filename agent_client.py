@@ -19,7 +19,7 @@ class AgentClient:
     async def chat(self, prompt: str) -> str:
         # 按你 agent 的真实接口调整 path / 请求体 / 响应字段
         resp = await self._client.post(
-            "/chat",
+            "",
             json={"message": prompt},
         )
         resp.raise_for_status()
