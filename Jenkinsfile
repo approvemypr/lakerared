@@ -1,16 +1,11 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.12-slim'
-            // 如果需要走代理出站,可在这里传环境变量或挂载配置
-            args '-e HTTPS_PROXY -e HTTP_PROXY -e NO_PROXY'
-        }
-    }
+    agent any
 
     environment {
-        LAKERA_RED_API_KEY = credentials('red_key')
-        TARGET_AGENT_URL   = 'https://chentest.app.n8n.cloud/webhook/chat'
-        RED_FAIL_THRESHOLD = '0'
+        LAKERA_RED_API_KEY   = credentials('sk_lr_jvom29_d49a0d557997e75a431d6df5de5ea6c3')
+        TARGET_AGENT_API_KEY = credentials('checkpoint123')
+        TARGET_AGENT_URL     = 'https://chentest.app.n8n.cloud/webhook/chat'
+        RED_FAIL_THRESHOLD   = '0'
     }
 
     options {
@@ -25,10 +20,13 @@ pipeline {
         stage('Setup') {
             steps {
                 sh '''
+                    if ! command -v python3 >/dev/null 2>&1; then
+                        apt-get update && apt-get install -y python3 python3-venv python3-pip
+                    fi
                     python3 -m venv .venv
                     . .venv/bin/activate
                     pip install --upgrade pip
-                    pip install lakera-red-sdk
+                    pip install lakera-red-sdk httpx
                 '''
             }
         }
