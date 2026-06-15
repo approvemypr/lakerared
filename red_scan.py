@@ -12,7 +12,7 @@ from agent_client import AgentClient
 
 async def main():
     async with LakeraRedClient(
-        api_key=os.environ["sk_lr_jvom29_d49a0d557997e75a431d6df5de5ea6c3"],
+        api_key=os.environ["red_key"],
         base_url="https://red-webhooks.lakera.ai",
         log_level="info",
     ) as client:
@@ -33,8 +33,8 @@ async def main():
 
         async def handler(session):
             agent = AgentClient(
-                base_url=os.environ["https://chentest.app.n8n.cloud/webhook/chat"],
-                api_key=os.environ.get("checkpoint123"),
+                base_url=os.environ["TARGET_AGENT_URL"],
+                api_key=os.environ.get("TARGET_AGENT_API_KEY"),
             )
             try:
                 async for message in session:
