@@ -27,7 +27,7 @@ async def main():
             concurrency=3,
         )
 
-        print(f"Scan progress: https://red.lakera.ai/scans/{scan.id}/progress")
+        print(f"Scan attributes: {vars(scan)}")
 
         async def handler(session):
             agent = AgentClient(
