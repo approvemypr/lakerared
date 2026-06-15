@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'linux' }
+    agent any
 
     environment {
         LAKERA_RED_API_KEY = credentials('red_key')
