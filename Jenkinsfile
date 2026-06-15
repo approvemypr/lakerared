@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        LAKERA_RED_API_KEY   = credentials('sk_lr_jvom29_d49a0d557997e75a431d6df5de5ea6c3')
-        TARGET_AGENT_API_KEY = credentials('checkpoint123')
+        LAKERA_RED_API_KEY   = credentials('red_key')
+        TARGET_AGENT_API_KEY = credentials('app_key')
         TARGET_AGENT_URL     = 'https://chentest.app.n8n.cloud/webhook/chat'
         RED_FAIL_THRESHOLD   = '0'
     }
