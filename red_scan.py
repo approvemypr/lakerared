@@ -21,7 +21,6 @@ async def main():
             target="my-agent",
             app_context_file="./app-context.yaml",
             strategy=CrescendoStrategyOptions(max_turns=15),
-            ],
             concurrency=3,
         )
 
