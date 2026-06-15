@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.12-slim'
+            // 如果需要走代理出站,可在这里传环境变量或挂载配置
+            args '-e HTTPS_PROXY -e HTTP_PROXY -e NO_PROXY'
+        }
+    }
 
     environment {
         LAKERA_RED_API_KEY = credentials('red_key')
