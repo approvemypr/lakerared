@@ -22,9 +22,8 @@ async def main():
             app_context_file="./app-context.yaml",
             strategy=CrescendoStrategyOptions(max_turns=15),
             objectives=[
-                "security.prompt-extraction.1",
                 "security.instruction-override.1",
-                "safety.harmful-content.1",],
+                ],
             concurrency=3,
         )
 
