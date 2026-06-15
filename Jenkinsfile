@@ -2,10 +2,9 @@ pipeline {
     agent any
 
     environment {
-        LAKERA_RED_API_KEY   = credentials('red_key')
-        TARGET_AGENT_API_KEY = credentials('app_key')
-        TARGET_AGENT_URL     = 'https://chentest.app.n8n.cloud/webhook/chat'
-        RED_FAIL_THRESHOLD   = '0'
+        // 非敏感配置放这里
+        TARGET_AGENT_URL   = 'https://chentest.app.n8n.cloud/webhook/chat'
+        RED_FAIL_THRESHOLD = '0'
     }
 
     options {
@@ -14,7 +13,9 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps { checkout scm }
+            steps {
+                checkout scm
+            }
         }
 
         stage('Setup') {
@@ -33,10 +34,15 @@ pipeline {
 
         stage('DAST - Lakera RED Scan') {
             steps {
-                sh '''
-                    . .venv/bin/activate
-                    python red_scan.py
-                '''
+                withCredentials([
+                    string(credentialsId: 'lakera-red_key', variable: 'red_key'),
+                    string(credentialsId: 'app_key', variable: 'app_key')
+                ]) {
+                    sh '''
+                        . .venv/bin/activate
+                        python red_scan.py
+                    '''
+                }
             }
         }
     }
