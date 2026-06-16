@@ -16,13 +16,34 @@ class AgentClient:
 
     async def chat(self, prompt: str) -> str:
         resp = await self._client.post(
-            "",                          # base_url 已是完整 webhook 地址
-            json={"message": prompt},    # n8n 期望的输入字段
+            "",
+            json={"message": prompt},
         )
         resp.raise_for_status()
-        data = resp.json()
-        # n8n 把回复放在 "message" 字段
-        return data["message"]
+
+        text = resp.text
+        if not text.strip():
+            # 空响应：打印诊断信息后返回空串，避免 JSONDecodeError 中断整个 session
+            print(f"[agent_client] EMPTY response. status={resp.status_code} "
+                  f"headers={dict(resp.headers)}")
+            return ""
+
+        try:
+            data = resp.json()
+        except Exception:
+            # 非 JSON：打印原始内容，按纯文本返回
+            print(f"[agent_client] NON-JSON response. status={resp.status_code} "
+                  f"body={text[:500]!r}")
+            return text
+
+        # 兼容 message / output / reply 等常见字段
+        for key in ("message", "output", "reply", "text"):
+            if isinstance(data, dict) and key in data:
+                return str(data[key])
+
+        # 字典里没找到预期字段，整体转字符串返回并打印
+        print(f"[agent_client] No known reply field. data={data!r}")
+        return str(data)
 
     async def shutdown(self):
         await self._client.aclose()
