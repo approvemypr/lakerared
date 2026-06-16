@@ -43,19 +43,9 @@ pipeline {
                         python red_scan.py
                     '''
                 }
+                archiveArtifacts artifacts: 'red-results.json', allowEmptyArchive: true
             }
         }
     }
 
-    post {
-        always {
-            node(null) {
-                archiveArtifacts artifacts: 'red-results.json',
-                                 allowEmptyArchive: true
-            }
-        }
-        failure {
-            echo 'Lakera RED scan failed or found issues. Check the console output and archived red-results.json.'
-        }
-    }
 }
